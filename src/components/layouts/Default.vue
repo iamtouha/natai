@@ -1,23 +1,16 @@
 <template>
   <div class="wrapper">
-    <button @click="logout">signout</button>
+    <NavBar></NavBar>
     <slot></slot>
+    <Footer></Footer>
   </div>
 </template>
 <script lang="ts">
 import Vue from "vue";
-import { auth } from "@/Firebase";
+const NavBar = () => import("@/components/Navbar.vue");
+const Footer = () => import("@/components/Footer.vue");
 export default Vue.extend({
   name: "Default",
-  methods: {
-    async logout() {
-      try {
-        await auth.signOut();
-        this.$router.push("/login");
-      } catch (error) {
-        alert(error.message);
-      }
-    }
-  }
+  components: { NavBar, Footer }
 });
 </script>

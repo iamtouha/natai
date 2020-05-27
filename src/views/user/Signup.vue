@@ -135,6 +135,3 @@ export default class Signup extends AuthMixin {
   }
 }
 </script>
-<style scoped>
-@import "../../assets/css/style.css";
-</style>

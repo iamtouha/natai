@@ -15,6 +15,15 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/dashboard",
+    name: "Dashboard",
+    component: () =>
+      import(/* webpackChunkName: "dashboard" */ "../views/user/Dashboard.vue"),
+    meta: {
+      access: "user"
+    }
+  },
+  {
     path: "/login",
     name: "login",
     component: () =>
@@ -45,7 +54,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const access = to.meta.access;
   const user = auth.currentUser;
-  if (user && access == "guest") next("/");
+
+  if (access == "all") next();
+  else if (user && access == "guest") next("/");
   else if (!user && access == "user") next("/login");
   else next();
 });
