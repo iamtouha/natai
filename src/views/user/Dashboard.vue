@@ -1,5 +1,5 @@
 <template>
-  <main class="bgLightBlue mt-5">
+  <main class="bgLightBlue">
     <div class="container">
       <div class="row">
         <div class="col-md-8 mt-3">
@@ -15,19 +15,19 @@
               <i class="fas fa-newspaper pr-3"></i>Your Articles
             </h2>
             <div class="container">
-              <div class="row">
+              <div v-if="myPosts.length" class="row">
                 <!--All post single item-->
-                <div class="col-md-6 mb-4">
+                <div
+                  v-for="post in myPosts"
+                  :key="post.id"
+                  class="col-md-6 mb-4"
+                >
                   <div
                     class="card text-left singleCardAllPost shadow shadow-sm"
                   >
                     <div class>
                       <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
-                          class="card-img-top"
-                          alt
-                        />
+                        <img :src="post.preview" class="card-img-top" alt />
                       </a>
                       <div class="pr-4 pt-4 text-right">
                         <a
@@ -45,9 +45,20 @@
                           class="dropdown-menu"
                           aria-labelledby="optionDropdown"
                         >
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Unpublish</a>
-                          <a class="dropdown-item text-danger" href="#">
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            @click="editPost(post)"
+                            >Edit</a
+                          >
+                          <a
+                            class="dropdown-item cursor-pointer"
+                            @click="hidePost(post)"
+                            >{{ post.active ? "Unpublish" : "Publish" }}</a
+                          >
+                          <a
+                            class="dropdown-item text-danger cursor-pointer"
+                            @click="dltPost(post)"
+                          >
                             <strong>Delete</strong>
                           </a>
                         </div>
@@ -59,18 +70,18 @@
                           href
                           class="teal-text text-center text-uppercase font-small"
                         >
-                          <strong>Category</strong>
+                          <strong>{{ post.category }}</strong>
                         </a>
-                        <a class="text-secondary font-small">- 14.09.2018</a>
+                        <a class="text-secondary font-small"
+                          >- {{ post.created.toDate().toDateString() }}</a
+                        >
                       </h6>
                       <h4 class="card-title">
-                        <strong>Title of the news</strong>
+                        <strong>{{ post.title }}</strong>
                       </h4>
                       <hr />
                       <p class="text-secondary mb-4">
-                        Sed ut perspiciatis unde omnis iste natus error sit
-                        voluptatem accusantium doloremque laudantium, totam
-                        aperiam.
+                        {{ post.body.substr(0, 120) }}
                       </p>
 
                       <p
@@ -88,356 +99,6 @@
                   </div>
                 </div>
                 <!--All post single item END-->
-                <div class="col-md-6 mb-4">
-                  <div
-                    class="card text-left singleCardAllPost shadow shadow-sm"
-                  >
-                    <div class>
-                      <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
-                          class="card-img-top"
-                          alt
-                        />
-                      </a>
-                      <div class="pr-4 pt-4 text-right">
-                        <a
-                          class="dropdown-toggle"
-                          href="#"
-                          id="optionDropdown"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-cog"></i>
-                        </a>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="optionDropdown"
-                        >
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Unpublish</a>
-                          <a class="dropdown-item text-danger" href="#">
-                            <strong>Delete</strong>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body mt-0 pt-0 mx-4">
-                      <h6 class="mb-3">
-                        <a
-                          href
-                          class="teal-text text-center text-uppercase font-small"
-                        >
-                          <strong>Category</strong>
-                        </a>
-                        <a class="text-secondary font-small">- 14.09.2018</a>
-                      </h6>
-                      <h4 class="card-title">
-                        <strong>Title of the news</strong>
-                      </h4>
-                      <hr />
-                      <p class="text-secondary mb-4">
-                        Sed ut perspiciatis unde omnis iste natus error sit
-                        voluptatem accusantium doloremque laudantium, totam
-                        aperiam.
-                      </p>
-
-                      <p
-                        class="text-right mb-0 text-uppercase font-small spacing font-weight-bold"
-                      >
-                        <a href="#" class="textBlue">
-                          read more
-                          <i
-                            class="fas fa-chevron-right"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div
-                    class="card text-left singleCardAllPost shadow shadow-sm"
-                  >
-                    <div class>
-                      <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
-                          class="card-img-top"
-                          alt
-                        />
-                      </a>
-                      <div class="pr-4 pt-4 text-right">
-                        <a
-                          class="dropdown-toggle"
-                          href="#"
-                          id="optionDropdown"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-cog"></i>
-                        </a>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="optionDropdown"
-                        >
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Unpublish</a>
-                          <a class="dropdown-item text-danger" href="#">
-                            <strong>Delete</strong>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body mt-0 pt-0 mx-4">
-                      <h6 class="mb-3">
-                        <a
-                          href
-                          class="teal-text text-center text-uppercase font-small"
-                        >
-                          <strong>Category</strong>
-                        </a>
-                        <a class="text-secondary font-small">- 14.09.2018</a>
-                      </h6>
-                      <h4 class="card-title">
-                        <strong>Title of the news</strong>
-                      </h4>
-                      <hr />
-                      <p class="text-secondary mb-4">
-                        Sed ut perspiciatis unde omnis iste natus error sit
-                        voluptatem accusantium doloremque laudantium, totam
-                        aperiam.
-                      </p>
-
-                      <p
-                        class="text-right mb-0 text-uppercase font-small spacing font-weight-bold"
-                      >
-                        <a href="#" class="textBlue">
-                          read more
-                          <i
-                            class="fas fa-chevron-right"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div
-                    class="card text-left singleCardAllPost shadow shadow-sm"
-                  >
-                    <div class>
-                      <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
-                          class="card-img-top"
-                          alt
-                        />
-                      </a>
-                      <div class="pr-4 pt-4 text-right">
-                        <a
-                          class="dropdown-toggle"
-                          href="#"
-                          id="optionDropdown"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-cog"></i>
-                        </a>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="optionDropdown"
-                        >
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Unpublish</a>
-                          <a class="dropdown-item text-danger" href="#">
-                            <strong>Delete</strong>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body mt-0 pt-0 mx-4">
-                      <h6 class="mb-3">
-                        <a
-                          href
-                          class="teal-text text-center text-uppercase font-small"
-                        >
-                          <strong>Category</strong>
-                        </a>
-                        <a class="text-secondary font-small">- 14.09.2018</a>
-                      </h6>
-                      <h4 class="card-title">
-                        <strong>Title of the news</strong>
-                      </h4>
-                      <hr />
-                      <p class="text-secondary mb-4">
-                        Sed ut perspiciatis unde omnis iste natus error sit
-                        voluptatem accusantium doloremque laudantium, totam
-                        aperiam.
-                      </p>
-
-                      <p
-                        class="text-right mb-0 text-uppercase font-small spacing font-weight-bold"
-                      >
-                        <a href="#" class="textBlue">
-                          read more
-                          <i
-                            class="fas fa-chevron-right"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div
-                    class="card text-left singleCardAllPost shadow shadow-sm"
-                  >
-                    <div class>
-                      <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
-                          class="card-img-top"
-                          alt
-                        />
-                      </a>
-                      <div class="pr-4 pt-4 text-right">
-                        <a
-                          class="dropdown-toggle"
-                          href="#"
-                          id="optionDropdown"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-cog"></i>
-                        </a>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="optionDropdown"
-                        >
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Unpublish</a>
-                          <a class="dropdown-item text-danger" href="#">
-                            <strong>Delete</strong>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body mt-0 pt-0 mx-4">
-                      <h6 class="mb-3">
-                        <a
-                          href
-                          class="teal-text text-center text-uppercase font-small"
-                        >
-                          <strong>Category</strong>
-                        </a>
-                        <a class="text-secondary font-small">- 14.09.2018</a>
-                      </h6>
-                      <h4 class="card-title">
-                        <strong>Title of the news</strong>
-                      </h4>
-                      <hr />
-                      <p class="text-secondary mb-4">
-                        Sed ut perspiciatis unde omnis iste natus error sit
-                        voluptatem accusantium doloremque laudantium, totam
-                        aperiam.
-                      </p>
-
-                      <p
-                        class="text-right mb-0 text-uppercase font-small spacing font-weight-bold"
-                      >
-                        <a href="#" class="textBlue">
-                          read more
-                          <i
-                            class="fas fa-chevron-right"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div
-                    class="card text-left singleCardAllPost shadow shadow-sm"
-                  >
-                    <div class>
-                      <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
-                          class="card-img-top"
-                          alt
-                        />
-                      </a>
-                      <div class="pr-4 pt-4 text-right">
-                        <a
-                          class="dropdown-toggle"
-                          href="#"
-                          id="optionDropdown"
-                          role="button"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          <i class="fas fa-cog"></i>
-                        </a>
-                        <div
-                          class="dropdown-menu"
-                          aria-labelledby="optionDropdown"
-                        >
-                          <a class="dropdown-item" href="#">Edit</a>
-                          <a class="dropdown-item" href="#">Unpublish</a>
-                          <a class="dropdown-item text-danger" href="#">
-                            <strong>Delete</strong>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-body mt-0 pt-0 mx-4">
-                      <h6 class="mb-3">
-                        <a
-                          href
-                          class="teal-text text-center text-uppercase font-small"
-                        >
-                          <strong>Category</strong>
-                        </a>
-                        <a class="text-secondary font-small">- 14.09.2018</a>
-                      </h6>
-                      <h4 class="card-title">
-                        <strong>Title of the news</strong>
-                      </h4>
-                      <hr />
-                      <p class="text-secondary mb-4">
-                        Sed ut perspiciatis unde omnis iste natus error sit
-                        voluptatem accusantium doloremque laudantium, totam
-                        aperiam.
-                      </p>
-
-                      <p
-                        class="text-right mb-0 text-uppercase font-small spacing font-weight-bold"
-                      >
-                        <a href="#" class="textBlue">
-                          read more
-                          <i
-                            class="fas fa-chevron-right"
-                            aria-hidden="true"
-                          ></i>
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
               <!--All Article END-->
             </div>
@@ -455,7 +116,7 @@
             <div class="card-body">
               <!-- Title -->
               <h4 class="card-title">
-                <strong>Tanvir Mahin</strong>
+                <strong>{{ user.displayName }}</strong>
               </h4>
               <p class="h6">
                 <i class="fas fa-graduation-cap"></i> Student at
@@ -497,196 +158,41 @@
                 <strong>YOUR POPULAR POSTS</strong>
               </p>
               <!--Single populer post-->
-              <div class="single-post">
-                <div class="row p-2">
-                  <div class="col-5">
-                    <a href="#">
-                      <img
-                        src="https://mdbootstrap.com/img/Photos/Others/photo13.jpg"
-                        class="img-fluid rounded"
-                        alt="Post image"
-                      />
-                    </a>
-                  </div>
-                  <div class="col-7">
-                    <h6 class="mt-0 text-small">
-                      <a href="#" class="titlePopulerPost">Title of the news</a>
-                    </h6>
-                    <div class>
-                      <p class="text-small text-secondary mb-0">
-                        <i
-                          class="fas fa-clock font-weight-lighter textBlue50"
-                        ></i>
-                        18/08/2017
-                      </p>
+              <template v-for="post in popularPosts">
+                <div :key="post.id" class="single-post">
+                  <div class="row p-2">
+                    <div class="col-5">
+                      <a href="#">
+                        <img
+                          :src="post.preview"
+                          class="img-fluid rounded"
+                          alt="Post image"
+                        />
+                      </a>
+                    </div>
+                    <div class="col-7">
+                      <h6 class="mt-0 text-small">
+                        <a href="#" class="titlePopulerPost">{{
+                          post.title
+                        }}</a>
+                      </h6>
+                      <div class>
+                        <p class="text-small text-secondary mb-0">
+                          <i
+                            class="fas fa-clock font-weight-lighter textBlue50"
+                          ></i>
+                          {{ post.created.toDate().toDateString() }}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <hr />
+                <hr :key="post.id + 1" />
+              </template>
               <!--Single populer post END-->
-              <div class="single-post">
-                <div class="row p-2">
-                  <div class="col-5">
-                    <a href="#">
-                      <img
-                        src="https://mdbootstrap.com/img/Photos/Others/photo13.jpg"
-                        class="img-fluid rounded"
-                        alt="Post image"
-                      />
-                    </a>
-                  </div>
-                  <div class="col-7">
-                    <h6 class="mt-0 text-small">
-                      <a href="#" class="titlePopulerPost">Title of the news</a>
-                    </h6>
-                    <div class>
-                      <p class="text-small text-secondary mb-0">
-                        <i
-                          class="fas fa-clock font-weight-lighter textBlue50"
-                        ></i>
-                        18/08/2017
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr />
-              <div class="single-post">
-                <div class="row p-2">
-                  <div class="col-5">
-                    <a href="#">
-                      <img
-                        src="https://mdbootstrap.com/img/Photos/Others/photo13.jpg"
-                        class="img-fluid rounded"
-                        alt="Post image"
-                      />
-                    </a>
-                  </div>
-                  <div class="col-7">
-                    <h6 class="mt-0 text-small">
-                      <a href="#" class="titlePopulerPost">Title of the news</a>
-                    </h6>
-                    <div class>
-                      <p class="text-small text-secondary mb-0">
-                        <i
-                          class="fas fa-clock font-weight-lighter textBlue50"
-                        ></i>
-                        18/08/2017
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr />
-              <div class="single-post">
-                <div class="row p-2">
-                  <div class="col-5">
-                    <a href="#">
-                      <img
-                        src="https://mdbootstrap.com/img/Photos/Others/photo13.jpg"
-                        class="img-fluid rounded"
-                        alt="Post image"
-                      />
-                    </a>
-                  </div>
-                  <div class="col-7">
-                    <h6 class="mt-0 text-small">
-                      <a href="#" class="titlePopulerPost">Title of the news</a>
-                    </h6>
-                    <div class>
-                      <p class="text-small text-secondary mb-0">
-                        <i
-                          class="fas fa-clock font-weight-lighter textBlue50"
-                        ></i>
-                        18/08/2017
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr />
-              <div class="single-post">
-                <div class="row p-2">
-                  <div class="col-5">
-                    <a href="#">
-                      <img
-                        src="https://mdbootstrap.com/img/Photos/Others/photo13.jpg"
-                        class="img-fluid rounded"
-                        alt="Post image"
-                      />
-                    </a>
-                  </div>
-                  <div class="col-7">
-                    <h6 class="mt-0 text-small">
-                      <a href="#" class="titlePopulerPost">Title of the news</a>
-                    </h6>
-                    <div class>
-                      <p class="text-small text-secondary mb-0">
-                        <i
-                          class="fas fa-clock font-weight-lighter textBlue50"
-                        ></i>
-                        18/08/2017
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <hr />
             </div>
           </section>
           <!--Popular posts END-->
-
-          <!--Report Problem-->
-          <div
-            class="container-fluid contact-form-custom my-3 shadow shadow-sm"
-          >
-            <form>
-              <p class="font-weight-bold text-center bg-light py-2 mb-4">
-                <strong>Report Problem</strong>
-              </p>
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      name="txtName"
-                      class="form-control"
-                      placeholder="Your Name *"
-                      value
-                      required
-                    />
-                  </div>
-                  <div class="form-group">
-                    <input
-                      type="text"
-                      name="txtEmail"
-                      class="form-control"
-                      placeholder="Your Email *"
-                      value
-                      required
-                    />
-                  </div>
-                  <textarea
-                    name="txtMsg"
-                    class="form-control"
-                    placeholder="Your Message *"
-                    style="width: 100%; height: 130px;"
-                  ></textarea>
-                  <div class="form-group mt-3">
-                    <input
-                      type="submit"
-                      name="btnSubmit"
-                      class="btnContact"
-                      value="Send Message"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <!--Contact END-->
         </div>
       </div>
     </div>
@@ -695,6 +201,65 @@
 
 <script lang="ts">
 import Vue from "vue";
-export default Vue.extend({});
+import { auth, db } from "@/Firebase";
+import { Post } from "@/models";
+
+export default Vue.extend({
+  data: () => ({
+    myPosts: [] as Post[],
+    query: (null as unknown) as Function
+  }),
+  computed: {
+    user() {
+      return auth.currentUser;
+    },
+    popularPosts() {
+      const posts = [...this.myPosts];
+      const sorted = posts.sort((a, b) => {
+        return (a.shares as number) - (b.shares as number);
+      });
+      return sorted.slice(0, 6);
+    }
+  },
+  methods: {
+    editPost: async function(post: Post) {
+      console.log(post.title);
+    },
+    hidePost: async function(post: Post) {
+      try {
+        await db
+          .collection("posts")
+          .doc(post.id)
+          .update({
+            active: !post.active
+          });
+      } catch (error) {
+        alert(error.message);
+      }
+    },
+    userPosts: async function() {
+      const query = db
+        .collection("posts")
+        .where("user_id", "==", this.user?.uid);
+      this.query = query.onSnapshot(querySnapshot => {
+        const posts: Post[] = [];
+        querySnapshot.forEach(doc => {
+          posts.push({ id: doc.id, ...(doc.data() as Post) });
+        });
+        this.myPosts = posts;
+      });
+    }
+  },
+  created() {
+    this.userPosts();
+  },
+  beforeDestroy() {
+    this.query();
+  }
+});
 </script>
-<style lang="scss"></style>
+<style lang="scss">
+.cursor-pointer {
+  cursor: pointer;
+}
+</style>

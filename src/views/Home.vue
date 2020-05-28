@@ -42,35 +42,26 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 pt-1">
-            <div class="container pt-3 mb-4">
+            <div v-if="topPost.title" class="container pt-3 mb-4">
               <h2 class="text-center font-weight-light pb-3">
                 <i class="fas fa-crown"></i> Article of the month
               </h2>
               <div class="card w-100 shadow shadow-sm mb-2">
                 <img
                   class="card-img-top"
-                  src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/8-col/img%20(126).jpg"
+                  :src="topPost.preview"
                   alt="Article image"
                 />
                 <div class="card-body p-3">
-                  <h4 class>Lorem ipsum dolor sit amet</h4>
+                  <h4 class>{{ topPost.title }}</h4>
                   <hr />
-                  <p class="card-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Exercitationem molestiae voluptatibus, libero numquam vel
-                    nobis dicta omnis! Repellat itaque ullam iure deleniti,
-                    fugiat assumenda culpa sequi laborum nam minima modi
-                    sapiente doloribus voluptatem eveniet enim quia. Deleniti
-                    fuga alias exercitationem quam sapiente consequuntur
-                    perspiciatis sunt libero vitae, dolorem ab quis, quo minima
-                    placeat? Amet praesentium sint cumque quos laboriosam
-                    distinctio? ...
-                  </p>
+                  <p class="card-text">{{ topPost.body.substr(0, 120) }}</p>
                   <div class="row">
                     <div class="col-6">
-                      <h6>27/04/2020</h6>
+                      <h6>{{ timeSince(topPost.created.toDate()) }}</h6>
                       <h6>
-                        <span class="font-weight-light">by</span> Tanvir Mahin
+                        <span class="font-weight-light">by</span>
+                        {{ topPost.user.displayName }}
                       </h6>
                     </div>
                     <div
@@ -156,35 +147,37 @@
                   <strong>POPULAR POSTS</strong>
                 </p>
                 <!--Single populer post-->
-                <div class="single-post">
-                  <div class="row p-2">
-                    <div class="col-5">
-                      <a href="#">
-                        <img
-                          src="https://mdbootstrap.com/img/Photos/Others/photo13.jpg"
-                          class="img-fluid rounded"
-                          alt="Post image"
-                        />
-                      </a>
-                    </div>
-                    <div class="col-7">
-                      <h6 class="mt-0 text-small">
-                        <a href="#" class="titlePopulerPost"
-                          >Title of the news</a
-                        >
-                      </h6>
-                      <div class>
-                        <p class="text-small text-secondary mb-0">
-                          <i
-                            class="fas fa-clock font-weight-lighter textBlue50"
-                          ></i>
-                          18/08/2017
-                        </p>
+                <template v-for="post in popularPosts">
+                  <div :key="post.id" class="single-post">
+                    <div class="row p-2">
+                      <div class="col-5">
+                        <a href="#">
+                          <img
+                            :src="post.preview"
+                            class="img-fluid rounded"
+                            alt="Post image"
+                          />
+                        </a>
+                      </div>
+                      <div class="col-7">
+                        <h6 class="mt-0 text-small">
+                          <a href="#" class="titlePopulerPost">{{
+                            post.title
+                          }}</a>
+                        </h6>
+                        <div class>
+                          <p class="text-small text-secondary mb-0">
+                            <i
+                              class="fas fa-clock font-weight-lighter textBlue50"
+                            ></i>
+                            {{ post.created.toDate().toDateString() }}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <hr />
+                  <hr :key="post.id + 1" />
+                </template>
               </div>
             </section>
             <!--Popular posts END-->
@@ -313,16 +306,31 @@ export default Vue.extend({
   name: "Home",
   components: {},
   data: () => ({
-    posts: [] as Post[]
+    posts: [] as Post[],
+    query: (null as unknown) as Function
   }),
   computed: {
     user() {
       return auth.currentUser;
+    },
+    popularPosts() {
+      const posts = [...this.posts];
+      const sorted = posts.sort((a, b) => {
+        return (a.shares as number) - (b.shares as number);
+      });
+      return sorted.slice(0, 6);
+    },
+    topPost() {
+      return (this as any).popularPosts[0] || {};
     }
   },
   created() {
     this.fetchPosts();
   },
+  beforeDestroy() {
+    this.query();
+  },
+
   methods: {
     timeSince(time: Date) {
       return (moment as any)(time).fromNow();
@@ -330,7 +338,7 @@ export default Vue.extend({
     fetchPosts: async function() {
       try {
         const ref = db.collection("posts").where("active", "==", true);
-        ref.onSnapshot(QuerySnapshot => {
+        this.query = ref.onSnapshot(QuerySnapshot => {
           const posts: Post[] = [];
           QuerySnapshot.forEach(doc =>
             posts.push({ id: doc.id, ...(doc.data() as Post) })
