@@ -104,15 +104,10 @@
                     >
                       <div class="view overlay">
                         <a href="#">
-                          <img
-                            :src="
-                              article.cover
-                                ? article.cover
-                                : '/img/article_cover.jpg'
-                            "
+                          <b-img
                             class="card-img-top"
-                            alt
-                          />
+                            :src="article.cover || '/img/article_cover.jpg'"
+                          ></b-img>
                         </a>
                       </div>
                       <div class="card-body">
@@ -178,22 +173,17 @@
                     >
                       <div class="col-5">
                         <a href="#">
-                          <img
-                            :src="
-                              article.cover
-                                ? article.cover
-                                : '/img/article_cover.jpg'
-                            "
-                            class="img-fluid rounded"
-                            alt="Article image"
-                          />
+                          <b-img-lazy
+                            class="card-img-top"
+                            :src="article.cover || '/img/article_cover.jpg'"
+                          ></b-img-lazy>
                         </a>
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerArticle">
-                            {{ article.title }}
-                          </a>
+                          <a href="#" class="titlePopulerArticle">{{
+                            article.title
+                          }}</a>
                         </h6>
                         <div class>
                           <p class="text-small text-secondary mb-0">

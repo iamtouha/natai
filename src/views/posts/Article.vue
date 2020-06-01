@@ -33,9 +33,9 @@
                 >{{ article.user.displayName }}</router-link
               >
               {{ article.title ? "in" : "" }}
-              <a href="#" class="text-dark font-weight-bold">
-                {{ `${article.category}` }}
-              </a>
+              <a href="#" class="text-dark font-weight-bold">{{
+                `${article.category}`
+              }}</a>
             </span>
             <span v-if="article.created" class="date-read">
               {{ toDateString(article.created.toDate()) }}
@@ -88,9 +88,9 @@
                 >
                 <div class="row">
                   <div class="col py-0">
-                    <small class="pb-2">{{
-                      timeSince(com.time.toDate())
-                    }}</small>
+                    <small class="pb-2">
+                      {{ timeSince(com.time.toDate()) }}
+                    </small>
                     <small
                       v-if="user.uid === com.user.uid"
                       @click="deleteComment(com.id)"
