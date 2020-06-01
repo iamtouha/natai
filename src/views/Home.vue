@@ -63,18 +63,26 @@
                   <div class="row">
                     <div class="col-6">
                       <h6>{{ timeSince(topArticle.created.toDate()) }}</h6>
-                      <h6>
+                      <router-link
+                        tag="a"
+                        style="text-decoration:none;"
+                        class="h6 text-dark"
+                        :to="'/users/' + topArticle.user.uid"
+                      >
                         <span class="font-weight-light">by</span>
                         {{ topArticle.user.displayName }}
-                      </h6>
+                      </router-link>
                     </div>
                     <div
                       class="col-6 d-flex justify-content-end align-items-end"
                     >
-                      <a href="#" class="h6 textBlue">
+                      <router-link
+                        :to="'/article/' + topArticle.id"
+                        class="h6 textBlue"
+                      >
                         READ MORE
                         <i class="fas fa-chevron-right" aria-hidden="true"></i>
-                      </a>
+                      </router-link>
                     </div>
                   </div>
                 </div>
@@ -183,9 +191,9 @@
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerArticle">{{
-                            article.title
-                          }}</a>
+                          <a href="#" class="titlePopulerArticle">
+                            {{ article.title }}
+                          </a>
                         </h6>
                         <div class>
                           <p class="text-small text-secondary mb-0">
@@ -337,8 +345,8 @@ export default Vue.extend({
     },
     popularArticles() {
       const articles = [...this.articles];
-      const sorted = articles.sort((a, b) => {
-        return a.shares?.length - b.shares?.length;
+      const sorted = articles.sort((a: any, b: any) => {
+        return b.comments?.length - a.comments?.length;
       });
       return sorted.slice(0, 6);
     },

@@ -54,9 +54,9 @@
                           <b-dropdown-item :to="'/edit/' + article.id"
                             >Edit Article</b-dropdown-item
                           >
-                          <b-dropdown-item @click="hideArticle(article)">{{
-                            article.active ? "Unpublish" : "Publish"
-                          }}</b-dropdown-item>
+                          <b-dropdown-item @click="hideArticle(article)">
+                            {{ article.active ? "Unpublish" : "Publish" }}
+                          </b-dropdown-item>
                           <b-dropdown-item @click="dltArticle(article)">
                             <strong class="text-danger">Delete</strong>
                           </b-dropdown-item>
@@ -152,7 +152,7 @@
           <section class="section shadow shadow-sm my-3">
             <div class="card card-body pb-0">
               <p class="font-weight-bold text-center bg-light py-2 mb-4">
-                <strong>YOUR POPULAR POSTS</strong>
+                <strong>YOUR POPULAR ARTICLES</strong>
               </p>
               <!--Single populer article-->
               <template v-for="article in popularArticles">
@@ -177,9 +177,9 @@
                     </div>
                     <div class="col-7">
                       <h6 class="mt-0 text-small">
-                        <a href="#" class="titlePopulerArticle">{{
-                          article.title
-                        }}</a>
+                        <a href="#" class="titlePopulerArticle">
+                          {{ article.title }}
+                        </a>
                       </h6>
                       <div class>
                         <p class="text-small text-secondary mb-0">
@@ -223,8 +223,8 @@ export default Vue.extend({
     },
     popularArticles() {
       const articles = [...this.myArticles];
-      const sorted = articles.sort((a, b) => {
-        return a.shares?.length - b.shares?.length;
+      const sorted = articles.sort((a: any, b: any) => {
+        return b.comments?.length - a.comments?.length;
       });
       return sorted.slice(0, 6);
     }
