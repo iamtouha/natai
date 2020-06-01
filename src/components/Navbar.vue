@@ -1,86 +1,51 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand textBlue50" href="#">BlogCMS</a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon text-dark"></span>
-    </button>
+  <b-navbar toggleable="md" class="shadow-sm" type="light" variant="light">
+    <b-navbar-brand href="#">Natai</b-navbar-brand>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link tag="a" to="/" class="nav-link">Home</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link tag="a" to="/dashboard" class="nav-link"
-            >Dashboard</router-link
+    <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+    <b-collapse id="nav-collapse" is-nav>
+      <b-navbar-nav>
+        <b-nav-item to="/">Home</b-nav-item>
+        <b-nav-item to="/about">About</b-nav-item>
+      </b-navbar-nav>
+
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form>
+          <b-form-input class="mr-sm-2" placeholder="Search"></b-form-input>
+          <b-button class="my-2 my-sm-0" variant="info" type="submit"
+            >Search</b-button
           >
-        </li>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-            >Categories</a
-          >
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Bangla</a>
-            <a class="dropdown-item" href="#">English</a>
-            <a class="dropdown-item" href="#">Poem</a>
-            <a class="dropdown-item" href="#">Story</a>
-          </div>
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input
-          class="form-control bg-light mr-sm-2"
-          type="search"
-          placeholder="Search"
-          aria-label="Search"
-        />
-        <button
-          class="btn btn-outline-dark my-2 my-sm-0 px-5 px-md-2"
-          type="submit"
-        >
-          Search
-        </button>
-      </form>
-      <router-link
-        v-if="!user"
-        tag="a"
-        to="/login"
-        class="btn btn-primary mx-md-3 px-md-4 px-5"
-        >Login</router-link
-      >
-    </div>
-  </nav>
+        </b-nav-form>
+        <b-nav-item-dropdown right>
+          <!-- Using 'button-content' slot -->
+          <template v-slot:button-content>
+            <em>{{ user.displayName }}</em>
+          </template>
+          <b-dropdown-item to="/dashboard">Dashboard</b-dropdown-item>
+          <b-dropdown-item @click="signout">Sign Out</b-dropdown-item>
+        </b-nav-item-dropdown>
+      </b-navbar-nav>
+    </b-collapse>
+  </b-navbar>
 </template>
 <script lang="ts">
 import Vue from "vue";
 import { auth } from "@/Firebase";
 
 export default Vue.extend({
-  data: () => ({
-    user: null as firebase.User | null
-  }),
-  created() {
-    this.user = auth.currentUser;
+  data: () => ({}),
+
+  computed: {
+    user() {
+      return auth.currentUser;
+    }
   },
   methods: {
-    async logout() {
+    async signout() {
       try {
-        await auth.signOut();
+        await this.$store.dispatch("signout");
         this.$router.push("/login");
       } catch (error) {
         alert(error.message);

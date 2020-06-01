@@ -15,12 +15,57 @@ const routes: Array<RouteConfig> = [
     }
   },
   {
+    path: "/about",
+    name: "About",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    meta: {
+      access: "all"
+    }
+  },
+  {
     path: "/dashboard",
     name: "Dashboard",
     component: () =>
       import(/* webpackChunkName: "dashboard" */ "../views/user/Dashboard.vue"),
     meta: {
       access: "user"
+    }
+  },
+  {
+    path: "/users/:id",
+    name: "Profile",
+    component: () =>
+      import(/* webpackChunkName: "profile" */ "../views/user/Profile.vue"),
+    meta: {
+      access: "all"
+    }
+  },
+  {
+    path: "/new-article",
+    name: "NewArticle",
+    component: () =>
+      import(/* webpackChunkName: "new_article" */ "../views/posts/Create.vue"),
+    meta: {
+      access: "user"
+    }
+  },
+  {
+    path: "/edit/:id",
+    name: "EditArticle",
+    component: () =>
+      import(/* webpackChunkName: "new_article" */ "../views/posts/Edit.vue"),
+    meta: {
+      access: "user"
+    }
+  },
+  {
+    path: "/article/:id",
+    name: "Article",
+    component: () =>
+      import(/* webpackChunkName: "article" */ "../views/posts/Article.vue"),
+    meta: {
+      access: "all"
     }
   },
   {
@@ -48,7 +93,14 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { x: 0, y: 0 };
+    }
+  }
 });
 
 router.beforeEach((to, from, next) => {

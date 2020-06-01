@@ -42,26 +42,30 @@
       <div class="container">
         <div class="row">
           <div class="col-md-8 pt-1">
-            <div v-if="topPost.title" class="container pt-3 mb-4">
+            <div v-if="topArticle.title" class="container pt-3 mb-4">
               <h2 class="text-center font-weight-light pb-3">
                 <i class="fas fa-crown"></i> Article of the month
               </h2>
               <div class="card w-100 shadow shadow-sm mb-2">
                 <img
                   class="card-img-top"
-                  :src="topPost.preview"
+                  :src="
+                    topArticle.cover
+                      ? topArticle.cover
+                      : '/img/article_cover.jpg'
+                  "
                   alt="Article image"
                 />
                 <div class="card-body p-3">
-                  <h4 class>{{ topPost.title }}</h4>
+                  <h4 class>{{ topArticle.title }}</h4>
                   <hr />
-                  <p class="card-text">{{ topPost.body.substr(0, 120) }}</p>
+                  <p class="card-text">{{ topArticle.preview }}</p>
                   <div class="row">
                     <div class="col-6">
-                      <h6>{{ timeSince(topPost.created.toDate()) }}</h6>
+                      <h6>{{ timeSince(topArticle.created.toDate()) }}</h6>
                       <h6>
                         <span class="font-weight-light">by</span>
-                        {{ topPost.user.displayName }}
+                        {{ topArticle.user.displayName }}
                       </h6>
                     </div>
                     <div
@@ -81,21 +85,29 @@
               </h2>
               <div class="container">
                 <div class="row">
-                  <!--All post single item-->
+                  <!--All article single item-->
                   <div
-                    v-for="post in posts"
-                    :key="post.id"
+                    v-for="article in articles"
+                    :key="article.id"
                     class="col-md-6 mb-4"
                   >
                     <div
-                      class="card text-left singleCardAllPost shadow shadow-sm"
+                      class="fill-height card text-left singleCardAllArticle shadow shadow-sm"
                     >
                       <div class="view overlay">
                         <a href="#">
-                          <img :src="post.preview" class="card-img-top" alt />
+                          <img
+                            :src="
+                              article.cover
+                                ? article.cover
+                                : '/img/article_cover.jpg'
+                            "
+                            class="card-img-top"
+                            alt
+                          />
                         </a>
                       </div>
-                      <div class="card-body mx-4">
+                      <div class="card-body">
                         <a
                           href
                           class="textBlue text-center text-uppercase font-small"
@@ -105,64 +117,74 @@
                             href
                             class="teal-text text-center text-uppercase font-small"
                           >
-                            <strong>{{ post.category }}</strong>
+                            <strong>{{ article.category }}</strong>
                           </a>
                           <a class="text-secondary font-small"
-                            >- {{ timeSince(post.created.toDate()) }}</a
+                            >- {{ timeSince(article.created.toDate()) }}</a
                           >
                         </h6>
                         <h4 class="card-title">
-                          <strong>{{ post.title }}</strong>
+                          <strong>{{ article.title }}</strong>
                         </h4>
                         <hr />
-                        <p class="text-secondary mb-4">
-                          {{ post.body.substr(0, 120) }}
-                        </p>
+                        <p class="text-secondary mb-4">{{ article.preview }}</p>
 
                         <p
                           class="text-right mb-0 text-uppercase font-small spacing font-weight-bold"
                         >
-                          <a href="#" class="textBlue">
+                          <router-link
+                            :to="'/article/' + article.id"
+                            tag="a"
+                            class="textBlue"
+                          >
                             read more
                             <i
                               class="fas fa-chevron-right"
                               aria-hidden="true"
                             ></i>
-                          </a>
+                          </router-link>
                         </p>
                       </div>
                     </div>
                   </div>
-                  <!--All post single item END-->
+                  <!--All article single item END-->
                 </div>
               </div>
               <!--All Article END-->
             </div>
           </div>
           <div class="col-md-4">
-            <!--Popular posts-->
+            <!--Popular articles-->
             <section class="section shadow shadow-sm my-3">
               <div class="card card-body pb-0">
                 <p class="font-weight-bold text-center bg-light py-2 mb-4">
                   <strong>POPULAR POSTS</strong>
                 </p>
-                <!--Single populer post-->
-                <template v-for="post in popularPosts">
-                  <div :key="post.id" class="single-post">
-                    <div class="row p-2">
+                <!--Single populer article-->
+                <template v-for="article in popularArticles">
+                  <div :key="article.id" class="single-article">
+                    <router-link
+                      tag="a"
+                      :to="'/article/' + article.id"
+                      class="row p-2"
+                    >
                       <div class="col-5">
                         <a href="#">
                           <img
-                            :src="post.preview"
+                            :src="
+                              article.cover
+                                ? article.cover
+                                : '/img/article_cover.jpg'
+                            "
                             class="img-fluid rounded"
-                            alt="Post image"
+                            alt="Article image"
                           />
                         </a>
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerPost">{{
-                            post.title
+                          <a href="#" class="titlePopulerArticle">{{
+                            article.title
                           }}</a>
                         </h6>
                         <div class>
@@ -170,17 +192,17 @@
                             <i
                               class="fas fa-clock font-weight-lighter textBlue50"
                             ></i>
-                            {{ post.created.toDate().toDateString() }}
+                            {{ article.created.toDate().toDateString() }}
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </router-link>
                   </div>
-                  <hr :key="post.id + 1" />
+                  <hr :key="article.id + 1" />
                 </template>
               </div>
             </section>
-            <!--Popular posts END-->
+            <!--Popular articles END-->
             <!--Categories-->
             <div class="card card-body pb-0 shadow shadow-sm">
               <div>
@@ -299,33 +321,33 @@
 <script lang="ts">
 import Vue from "vue";
 import { auth, db } from "@/Firebase";
-import { Post } from "@/models";
-import * as moment from "moment";
+import { Article } from "@/models";
+import moment from "moment";
 
 export default Vue.extend({
   name: "Home",
   components: {},
   data: () => ({
-    posts: [] as Post[],
+    articles: [] as Article[],
     query: (null as unknown) as Function
   }),
   computed: {
     user() {
       return auth.currentUser;
     },
-    popularPosts() {
-      const posts = [...this.posts];
-      const sorted = posts.sort((a, b) => {
-        return (a.shares as number) - (b.shares as number);
+    popularArticles() {
+      const articles = [...this.articles];
+      const sorted = articles.sort((a, b) => {
+        return a.shares?.length - b.shares?.length;
       });
       return sorted.slice(0, 6);
     },
-    topPost() {
-      return (this as any).popularPosts[0] || {};
+    topArticle() {
+      return (this as any).popularArticles[0] || {};
     }
   },
   created() {
-    this.fetchPosts();
+    this.fetchArticles();
   },
   beforeDestroy() {
     this.query();
@@ -333,17 +355,21 @@ export default Vue.extend({
 
   methods: {
     timeSince(time: Date) {
-      return (moment as any)(time).fromNow();
+      return moment(time).fromNow();
     },
-    fetchPosts: async function() {
+    fetchArticles: async function() {
       try {
-        const ref = db.collection("posts").where("active", "==", true);
+        const time = moment().subtract(1, "month");
+        const ref = db
+          .collection("articles")
+          .where("created", ">=", time.toDate())
+          .where("active", "==", true);
         this.query = ref.onSnapshot(QuerySnapshot => {
-          const posts: Post[] = [];
+          const articles: Article[] = [];
           QuerySnapshot.forEach(doc =>
-            posts.push({ id: doc.id, ...(doc.data() as Post) })
+            articles.push({ id: doc.id, ...(doc.data() as Article) })
           );
-          this.posts = posts;
+          this.articles = articles;
         });
       } catch (error) {
         alert(error.message);
