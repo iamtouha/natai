@@ -21,7 +21,7 @@
             >Search</b-button
           >
         </b-nav-form>
-        <b-nav-item-dropdown right>
+        <b-nav-item-dropdown v-if="user" right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
             <em>{{ user.displayName }}</em>

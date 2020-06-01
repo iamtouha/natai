@@ -1,7 +1,5 @@
 <template>
   <div class="d-block py-5 bgLightBlue">
-    <div id="fb-root"></div>
-
     <section class="container bg-white card card-body shadow shadow-sm">
       <div class="col-lg-12">
         <div
@@ -33,9 +31,9 @@
                 >{{ article.user.displayName }}</router-link
               >
               {{ article.title ? "in" : "" }}
-              <a href="#" class="text-dark font-weight-bold">{{
-                `${article.category}`
-              }}</a>
+              <a href="#" class="text-dark font-weight-bold">
+                {{ `${article.category}` }}
+              </a>
             </span>
             <span v-if="article.created" class="date-read">
               {{ toDateString(article.created.toDate()) }}
@@ -88,11 +86,11 @@
                 >
                 <div class="row">
                   <div class="col py-0">
-                    <small class="pb-2">
-                      {{ timeSince(com.time.toDate()) }}
-                    </small>
+                    <small class="pb-2">{{
+                      timeSince(com.time.toDate())
+                    }}</small>
                     <small
-                      v-if="user.uid === com.user.uid"
+                      v-if="user && user.uid === com.user.uid"
                       @click="deleteComment(com.id)"
                       style="cursor:pointer;"
                       class="pb-2 pl-3 text-primary"
@@ -136,9 +134,11 @@
               </div>
             </form>
           </div>
-          <b-button v-else size="large" variant="primary" to="/login"
-            >login to comment</b-button
-          >
+          <div v-else class="w-100 text-center">
+            <b-button size="large" variant="primary" to="/login"
+              >login to comment</b-button
+            >
+          </div>
         </div>
       </div>
     </section>
@@ -162,7 +162,7 @@ export default class ClassName extends Vue {
   } as Article;
   comment: Comment = {
     text: "",
-    user: this.$store.getters.signature,
+    user: this.$store.getters,
     time: firebase.firestore.FieldValue.serverTimestamp()
   };
   body = "";
