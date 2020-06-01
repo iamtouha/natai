@@ -14,9 +14,10 @@
               v-model="article.title"
               required
             />
-            <small class="text-secondary">
-              Title of the article represents what your article is all about.
-            </small>
+            <small class="text-secondary"
+              >Title of the article represents what your article is all
+              about.</small
+            >
           </div>
           <div class="form-row">
             <div class="col-md-6">
@@ -196,7 +197,9 @@ export default Vue.extend({
       this.loading = false;
     },
     preview() {
-      return this.body.replace(/<\/?[^>]+(>|$)/g, "").substr(0, 250);
+      const el = document.createElement("span");
+      el.innerHTML = this.body;
+      return el.textContent;
     },
     slugify() {
       const a =
