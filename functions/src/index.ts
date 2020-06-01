@@ -1,5 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import { HttpsError } from "firebase-functions/lib/providers/https";
 // const gcs = require('@google-cloud/storage')();
 
 // const bucket = gcs.bucket(functions.config().firebase.storageBucket)
@@ -20,6 +21,35 @@ function uuid() {
   return rtn;
 }
 
+module.exports.deleteComment = functions.https.onCall(async (data, context) => {
+  try {
+    const user = await auth.getUser(context.auth?.token.uid as string);
+    const doc = await db.doc("articles/" + data.article).get();
+    if (doc.exists) {
+      const comments: any[] = (doc as any).data().comments;
+      const comment = comments.find(com => com.id === data.comment);
+      if (comment) {
+        if (user.uid === comment.user.uid) {
+          const index = comments.indexOf(comment);
+          comments.splice(index, 1);
+          await doc.ref.update({
+            comments
+          });
+          return "success";
+        } else {
+          throw new HttpsError("permission-denied", "not this user");
+        }
+      } else {
+        throw new HttpsError("not-found", "comment not found");
+      }
+    } else {
+      throw new HttpsError("not-found", "article not found");
+    }
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+});
 module.exports.addComment = functions.https.onCall(async (data, context) => {
   try {
     const user = await auth.getUser(context.auth?.token.uid as string);
@@ -34,6 +64,7 @@ module.exports.addComment = functions.https.onCall(async (data, context) => {
         })
       });
     } else console.log("user not found");
+    return "success";
   } catch (error) {
     console.log(error);
     return error;
@@ -45,12 +76,14 @@ module.exports.updateArticleUser = functions.firestore
   .onUpdate(async (change, context) => {
     try {
       const { displayName, photoURL } = (change as any).after.data();
+      console.log(change.after.id, context.auth?.uid);
       const batch = db.batch();
-      const qs = await db
+      const query = db
         .collection("articles")
-        .where("user.uid", "==", change.after.id)
-        .get();
-      qs.forEach(doc => {
+        .where("user.uid", "==", change.after.id);
+      const snapshot = await query.get();
+      console.log(snapshot.empty);
+      snapshot.forEach(doc => {
         batch.update(doc.ref, {
           user: {
             uid: change.after.id,
@@ -59,8 +92,11 @@ module.exports.updateArticleUser = functions.firestore
           }
         });
       });
+      await batch.commit();
+      return "success";
     } catch (error) {
       console.log(error);
+      return error;
     }
   });
 
@@ -73,8 +109,10 @@ module.exports.onUserCreate = functions.auth.user().onCreate(async user => {
       institute: "not set",
       about: "not set"
     });
+    return "success";
   } catch (error) {
     console.log(error);
+    return error;
   }
 });
 
@@ -87,8 +125,17 @@ module.exports.onArticleDelete = functions.firestore
       .file("articles/" + doc.id)
       .delete()
       .then(
-        () => console.log(`deleted ${doc.id}`),
-        err => console.error(err.message)
+        () => {
+          console.log(`deleted ${doc.id}`);
+          return "success";
+        },
+        err => {
+          console.error(err.message);
+          return err;
+        }
       )
-      .catch(err => console.log(err.message));
+      .catch(err => {
+        console.error(err.message);
+        return err;
+      });
   });

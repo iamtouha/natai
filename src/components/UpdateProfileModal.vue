@@ -142,8 +142,10 @@ export default Vue.extend({
         this.loading = true;
         const promises = [];
         const { institute, image, displayName, about } = this.updateFields;
+
         if (image) {
           const fileExtension = image.name.split(".").pop();
+
           const snapshot = await storage
             .ref()
             .child(`users/${auth.currentUser?.uid}.${fileExtension}`)
@@ -152,7 +154,7 @@ export default Vue.extend({
           promises.unshift(
             auth.currentUser?.updateProfile({ displayName, photoURL })
           );
-        } else if (displayName === this.user.displayName) {
+        } else if (displayName !== this.user.displayName) {
           promises.unshift(auth.currentUser?.updateProfile({ displayName }));
         }
         const ref = db.doc("users/" + auth.currentUser?.uid);

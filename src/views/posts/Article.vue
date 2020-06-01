@@ -33,9 +33,9 @@
                 >{{ article.user.displayName }}</router-link
               >
               {{ article.title ? "in" : "" }}
-              <a href="#" class="text-dark font-weight-bold">{{
-                `${article.category}`
-              }}</a>
+              <a href="#" class="text-dark font-weight-bold">
+                {{ `${article.category}` }}
+              </a>
             </span>
             <span v-if="article.created" class="date-read">
               {{ toDateString(article.created.toDate()) }}
@@ -64,11 +64,18 @@
           >
             <div v-for="(com, i) in article.comments" :key="i" class="row my-2">
               <div class="col-md-1 col-2 p-0 m-auto">
-                <img
+                <b-img-lazy
+                  rounded="circle"
+                  v-bind="{
+                    blank: true,
+                    blankColor: '#777',
+                    width: 75,
+                    height: 75,
+                    class: 'm1'
+                  }"
                   :src="com.user.photoURL || '/img/nophoto.svg'"
-                  alt
-                  class="img-fluid rounded-circle"
-                />
+                  :alt="article.user.name"
+                ></b-img-lazy>
               </div>
               <div class="col-md-10 col-9 py-1 card card-body bg-light">
                 <p class="py-1 mb-1">{{ com.text }}</p>
@@ -79,9 +86,20 @@
                   class="p font-weight-bold mb-0 text-primary"
                   >{{ com.user.displayName }}</router-link
                 >
-                <small class="float-right pb-2">{{
-                  timeSince(com.time.toDate())
-                }}</small>
+                <div class="row">
+                  <div class="col py-0">
+                    <small class="pb-2">{{
+                      timeSince(com.time.toDate())
+                    }}</small>
+                    <small
+                      v-if="user.uid === com.user.uid"
+                      @click="deleteComment(com.id)"
+                      style="cursor:pointer;"
+                      class="pb-2 pl-3 text-primary"
+                      >Delete comment</small
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -200,6 +218,14 @@ export default class ClassName extends Vue {
     }
     this.comment.text = "";
     this.commentLoading = false;
+  }
+  async deleteComment(comment: string) {
+    try {
+      const deleteComment = functions.httpsCallable("deleteComment");
+      await deleteComment({ article: this.id, comment });
+    } catch (error) {
+      alert(error.message);
+    }
   }
   fetchArticle() {
     this.loading = true;
