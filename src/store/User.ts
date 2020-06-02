@@ -23,13 +23,19 @@ export default class User extends VuexModule {
   // mutations
   @Mutation
   SET_USER_INFO(payload: Profile) {
-    this.user = { ...this.user, ...payload };
+    const { displayName, uid, photoURL, email } = payload;
+    this.user.uid = uid;
+    this.user.displayName = displayName as string;
+    this.user.photoURL = photoURL as string;
+    this.user.email = email as string;
   }
   @Mutation
   SET_USER_INFO_ADD(payload: Profile) {
-    const { institute, about } = payload;
+    const { institute, about, displayName, photoURL } = payload;
     this.user.institute = institute;
     this.user.about = about;
+    if (photoURL) this.user.photoURL = photoURL;
+    if (displayName) this.user.displayName = displayName;
   }
   @Mutation
   REMOVE_USER_INFO() {
@@ -54,11 +60,10 @@ export default class User extends VuexModule {
           photoURL,
           email
         });
-        const userDoc = db.doc("users/" + uid).onSnapshot(
+        db.doc("users/" + uid).onSnapshot(
           doc => {
             if (doc.exists) {
               this.context.commit("SET_USER_INFO_ADD", doc.data());
-              userDoc();
             }
           },
           error => error

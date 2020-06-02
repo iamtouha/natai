@@ -102,13 +102,23 @@ module.exports.updateArticleUser = functions.firestore
 
 module.exports.onUserCreate = functions.auth.user().onCreate(async user => {
   try {
-    db.doc("users/" + user.uid).set({
-      uid: user.uid,
-      photoURL: user.photoURL,
-      displayName: user.displayName,
-      institute: "not set",
-      about: "not set"
-    });
+    let userObject;
+    if (user.displayName) {
+      userObject = {
+        uid: user.uid,
+        photoURL: user.photoURL,
+        displayName: user.displayName,
+        institute: "not set",
+        about: "not set"
+      };
+    } else
+      userObject = {
+        uid: user.uid,
+        photoURL: user.photoURL,
+        institute: "not set",
+        about: "not set"
+      };
+    await db.doc("users/" + user.uid).set(userObject, { merge: true });
     return "success";
   } catch (error) {
     console.log(error);

@@ -16,6 +16,7 @@ export interface Article {
   title: string;
   body: string;
   cover: string;
+  category: string;
   tags: string[];
   preview: string;
   views: string[];

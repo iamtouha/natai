@@ -24,11 +24,14 @@
         <b-nav-item-dropdown v-if="user" right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
-            <em>{{ user.displayName }}</em>
+            <em>{{ detail.displayName }}</em>
           </template>
           <b-dropdown-item to="/dashboard">Dashboard</b-dropdown-item>
           <b-dropdown-item @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
+        <b-button v-if="!user" class="ml-2 px-4 my-2 my-sm-0" to="/login"
+          >Login</b-button
+        >
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
@@ -43,6 +46,9 @@ export default Vue.extend({
   computed: {
     user() {
       return auth.currentUser;
+    },
+    detail() {
+      return this.$store.getters.profile;
     }
   },
   methods: {

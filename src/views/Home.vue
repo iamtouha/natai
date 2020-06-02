@@ -24,7 +24,7 @@
             <router-link
               tag="button"
               to="/login"
-              class="btn btn-primary ml-md-3 px-4"
+              class="btn btn-primary ml-md-3 ml-1 px-4"
               >Login Now</router-link
             >
           </div>
@@ -181,9 +181,9 @@
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerArticle">{{
-                            article.title
-                          }}</a>
+                          <a href="#" class="titlePopulerArticle">
+                            {{ article.title }}
+                          </a>
                         </h6>
                         <div class>
                           <p class="text-small text-secondary mb-0">
@@ -209,14 +209,16 @@
                 </p>
                 <ul class="list-group my-4">
                   <li
+                    v-for="cat in categories"
+                    :key="cat.name"
                     class="list-group-item d-flex justify-content-between align-items-center"
                   >
                     <a href="#" class="textBlue">
-                      <p class="mb-0">Travel</p>
+                      <p class="mb-0">{{ cat.name }}</p>
                     </a>
-                    <span class="badge badge-pill badge-primary font-small"
-                      >4</span
-                    >
+                    <span class="badge badge-pill badge-primary font-small">{{
+                      cat.items
+                    }}</span>
                   </li>
                 </ul>
               </div>
@@ -230,7 +232,7 @@
               </p>
               <div class="list-group text-center">
                 <a href="#" class="list-group-item list-group-item-action"
-                  >Mey 2020</a
+                  >May 2020</a
                 >
                 <a href="#" class="list-group-item list-group-item-action"
                   >April 2020</a
@@ -332,6 +334,19 @@ export default Vue.extend({
   computed: {
     user() {
       return auth.currentUser;
+    },
+    categories() {
+      interface Category {
+        name: string;
+        items: number;
+      }
+      return this.articles.reduce((acc, crr) => {
+        const includes = acc.find(cat => cat.name === crr.category);
+        if (!includes) {
+          acc.push({ name: crr.category, items: 1 });
+        } else includes.items++;
+        return acc;
+      }, [] as Category[]);
     },
     popularArticles() {
       const articles = [...this.articles];

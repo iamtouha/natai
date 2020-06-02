@@ -15,7 +15,7 @@
                   <i class="fas fa-user textBlue"></i> Name
                 </label>
                 <input
-                  v-model="cred.name"
+                  v-model="cred.displayName"
                   type="text"
                   class="form-control"
                   id="name"
@@ -40,7 +40,7 @@
                 </label>
                 <input
                   v-model="cred.password"
-                  type="text"
+                  type="password"
                   class="form-control"
                   id="password"
                   required
@@ -52,7 +52,7 @@
                 </label>
                 <input
                   v-model="cred.password2"
-                  type="text"
+                  type="password"
                   class="form-control"
                   id="password2"
                   required
@@ -61,8 +61,9 @@
               </div>
               <div class="form-group d-flex justify-content-center">
                 <input
+                  :disabled="loading"
                   type="submit"
-                  value="Sign Up"
+                  :value="loading ? 'Signing up' : 'Sign Up'"
                   class="btn btn-primary w-50"
                 />
               </div>
@@ -99,11 +100,12 @@
 <script lang="ts">
 // @ is an alias to /src
 import { Component } from "vue-property-decorator";
-import { auth } from "@/Firebase";
+import { auth, db } from "@/Firebase";
 import AuthMixin from "@/mixins/authMixins";
 
 @Component
 export default class Signup extends AuthMixin {
+  loading = false;
   cred = {
     displayName: "",
     email: "",
@@ -113,13 +115,24 @@ export default class Signup extends AuthMixin {
   errorMsg = "";
   async signup() {
     try {
+      this.loading = true;
       const { email, password, displayName, password2 } = this.cred;
       if (password !== password2) throw Error("Passwords do not match.");
       await auth.createUserWithEmailAndPassword(email, password);
-      await auth.currentUser?.updateProfile({ displayName });
+      const ref = db.doc("users/" + auth.currentUser?.uid);
+      await Promise.all([
+        auth.currentUser?.updateProfile({ displayName }),
+        ref.set(
+          { displayName, about: "not set", institute: "not set" },
+          { merge: true }
+        )
+      ]);
+      this.$store.dispatch("fetchUser");
       this.$router.push("/");
+      this.loading = false;
     } catch (error) {
       this.errorMsg = error.message;
+      this.loading = false;
     }
   }
   async loginWith(type: string) {

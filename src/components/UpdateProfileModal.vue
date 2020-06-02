@@ -165,7 +165,6 @@ export default Vue.extend({
         );
         const resp = await Promise.all(promises);
         this.$bvModal.hide("editProfile");
-        location.reload();
       } catch (error) {
         alert(error.message);
       }

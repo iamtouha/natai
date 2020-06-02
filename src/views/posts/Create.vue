@@ -14,10 +14,9 @@
               v-model="article.title"
               required
             />
-            <small class="text-secondary"
-              >Title of the article represents what your article is all
-              about.</small
-            >
+            <small class="text-secondary">
+              Title of the article represents what your article is all about.
+            </small>
           </div>
           <div class="form-row">
             <div class="col-md-6">
@@ -189,7 +188,7 @@ export default Vue.extend({
           updated: null
         });
         this.progress = 1;
-        this.$router.push("/articles/" + id);
+        this.$router.push("/article/" + id);
       } catch (error) {
         this.error = error.message;
       }

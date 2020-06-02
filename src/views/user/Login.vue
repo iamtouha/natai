@@ -42,8 +42,9 @@
               </div>
               <div class="form-group d-flex justify-content-center">
                 <input
+                  :disabled="loading"
                   type="submit"
-                  value="Login Now"
+                  :value="loading ? 'Logging in' : 'Login Now'"
                   class="btn btn-primary w-50"
                 />
               </div>
@@ -105,13 +106,16 @@ export default class Login extends AuthMixin {
   };
   errorMsg = "";
   async signin() {
+    this.loading = true;
     try {
       await auth.signInWithEmailAndPassword(
         this.cred.email,
         this.cred.password
       );
+      this.loading = false;
       this.$router.push("/");
     } catch (error) {
+      this.loading = false;
       this.errorMsg = error.message;
     }
   }

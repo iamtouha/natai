@@ -118,12 +118,11 @@ export default class User extends Vue {
     return this.$route.params.id;
   }
   created() {
-    if (auth.currentUser) {
-      if (auth.currentUser.uid === this.uid) this.$router.push("/dashboard");
-      else {
-        this.fetchProfile();
-        this.fetchArticles();
-      }
+    if (auth.currentUser && auth.currentUser.uid === this.uid) {
+      this.$router.push("/dashboard");
+    } else {
+      this.fetchProfile();
+      this.fetchArticles();
     }
   }
   async fetchProfile() {
