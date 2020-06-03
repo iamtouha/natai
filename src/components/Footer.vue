@@ -4,15 +4,16 @@
       <div class="row mt-3">
         <div class="col-md-3 col-lg-4 col-xl-3 mb-4">
           <h6 class="text-uppercase font-weight-bold">
-            <strong>Company name</strong>
+            <strong>Natai</strong>
           </h6>
           <hr
             class="bgBlue mb-4 mt-0 d-inline-block mx-auto"
             style="width: 60px;"
           />
           <p>
-            Here you can use rows and columns here to organize your footer
-            content. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            Natai, is a Bangladeshi youth organization with the sole purpose to
+            provide students a common platform for showcasing their creative
+            skills.
           </p>
         </div>
         <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">

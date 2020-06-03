@@ -2,7 +2,7 @@
   <div style="display:contents;">
     <div
       v-if="!user"
-      class="container-fluid homepageHeaderSection bgLightBlue pt-md-5 pb-md-4 pt-5 pb-0"
+      class="container-fluid homepageHeaderSection bgLightBlue pb-md-4 pb-0"
     >
       <div
         class="row py-md-5 py-0 shadow shadow-sm bg-light text-md-left text-center"
@@ -181,9 +181,9 @@
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerArticle">
-                            {{ article.title }}
-                          </a>
+                          <a href="#" class="titlePopulerArticle">{{
+                            article.title
+                          }}</a>
                         </h6>
                         <div class>
                           <p class="text-small text-secondary mb-0">
@@ -216,9 +216,9 @@
                     <a href="#" class="textBlue">
                       <p class="mb-0">{{ cat.name }}</p>
                     </a>
-                    <span class="badge badge-pill badge-primary font-small">{{
-                      cat.items
-                    }}</span>
+                    <span class="badge badge-pill badge-primary font-small">
+                      {{ cat.items }}
+                    </span>
                   </li>
                 </ul>
               </div>
