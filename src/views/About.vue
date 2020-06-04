@@ -2,7 +2,7 @@
   <div style="margin-top:-22px;" class="bgLightBlue">
     <div class="container mt-4 overflow-hidden">
       <div class="row pb-4">
-        <div class="col-md-6 m-auto">
+        <div class="col-md-6 m-auto pt-4">
           <h1 class="font-weight-normal">
             About
             <span class="font-weight-bold">Natai</span>
@@ -117,8 +117,7 @@
                 <br />Rumi
               </span>
               <span class="pt-1 d-block">
-                <i class="fas fa-briefcase pr-2"></i>Executive Member Editorial
-                Team
+                <i class="fas fa-briefcase pr-2"></i>Co-Founder, Editor
               </span>
               <span class="pt-1 d-block">
                 <i class="fas fa-graduation-cap pr-2"></i>Rajshahi University of
