@@ -9,7 +9,7 @@
       >
         <div class="col-md-5 my-auto px-md-5 p-3 pb-md-5">
           <img src="../assets/NataiLogo.png" alt class="w-25 ml-md-5 mx-3" />
-          <h1 class="text-warning appTitle pl-md-5 px-3">
+          <h1 class="textBlue appTitle pl-md-5 px-3">
             <span class="d-md-block d-none">Welcome to</span> Natai.com
           </h1>
           <h3 class="pl-md-5 px-3">A place to showcase your talent</h3>
@@ -21,13 +21,13 @@
           </p>
 
           <div class="ml-md-5 mx-auto z-top">
-            <router-link tag="button" to="/signup" class="btn btn-warning px-4"
+            <router-link tag="button" to="/signup" class="btn btn-primary px-4"
               >Sign Up</router-link
             >
             <router-link
               tag="button"
               to="/login"
-              class="btn btn-warning ml-md-3 ml-1 px-4"
+              class="btn btn-primary ml-md-3 ml-1 px-4"
               >Login Now</router-link
             >
           </div>
@@ -184,9 +184,9 @@
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerArticle">
-                            {{ article.title }}
-                          </a>
+                          <a href="#" class="titlePopulerArticle">{{
+                            article.title
+                          }}</a>
                         </h6>
                         <div class>
                           <p class="text-small text-secondary mb-0">
@@ -219,9 +219,9 @@
                     <a href="#" class="textBlue">
                       <p class="mb-0">{{ cat.name }}</p>
                     </a>
-                    <span class="badge badge-pill badge-warning font-small">{{
-                      cat.items
-                    }}</span>
+                    <span class="badge badge-pill badge-primary font-small">
+                      {{ cat.items }}
+                    </span>
                   </li>
                 </ul>
               </div>
