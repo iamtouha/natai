@@ -7,6 +7,7 @@
 </template>
 <script lang="ts">
 import Vue from "vue";
+import "./globalStyles/style.scss";
 import AuthLayout from "@/components/layouts/Auth.vue";
 import DefaultLayout from "@/components/layouts/Default.vue";
 export default Vue.extend({

@@ -1,0 +1,11 @@
+$enable-shadows: true;
+
+$theme-colors: (
+  // change "success" from green to teal
+    // "primary": #bf7c3b,
+    // add "custom" to orange
+);
+
+// Include Bootstrap and BootstrapVue SCSS files
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-vue/src/index.scss";
