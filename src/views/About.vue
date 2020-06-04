@@ -1,9 +1,9 @@
 <template>
-  <div style="margin-top:-22px;" class="bgLightBlue">
-    <div class="container mt-4 overflow-hidden">
+  <div class="bgLightBlue">
+    <div class="container  overflow-hidden">
       <div class="row pb-4">
-        <div class="col-md-6 m-auto pt-4">
-          <h1 class="font-weight-normal">
+        <div class="col-md-6 m-auto">
+          <h1 class="font-weight-normal pt-4">
             About
             <span class="font-weight-bold">Natai</span>
           </h1>
