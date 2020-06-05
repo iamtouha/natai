@@ -24,7 +24,17 @@
         <b-nav-item-dropdown v-if="user" right>
           <!-- Using 'button-content' slot -->
           <template v-slot:button-content>
-            <em>{{ detail.displayName }}</em>
+            <span class="pr-2 pl-3">{{
+              detail.displayName.split(" ")[
+                detail.displayName.split(" ").length - 1
+              ]
+            }}</span>
+            <img
+              v-bind:src="detail.photoURL"
+              alt="profile"
+              class="rounded-circle"
+              style="height: 30px; border:2px solid var(--colorBlue)"
+            />
           </template>
           <b-dropdown-item to="/dashboard">Dashboard</b-dropdown-item>
           <b-dropdown-item to="/new-article">Create Article</b-dropdown-item>
@@ -50,6 +60,7 @@ export default Vue.extend({
       return auth.currentUser;
     },
     detail() {
+      console.log(this.$store.getters.profile);
       return this.$store.getters.profile;
     }
   },
