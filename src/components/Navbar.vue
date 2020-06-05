@@ -27,6 +27,8 @@
             <em>{{ detail.displayName }}</em>
           </template>
           <b-dropdown-item to="/dashboard">Dashboard</b-dropdown-item>
+          <b-dropdown-item to="//new-article">Create Article</b-dropdown-item>
+
           <b-dropdown-item @click="signout">Sign Out</b-dropdown-item>
         </b-nav-item-dropdown>
         <b-button v-if="!user" class="ml-2 px-4 my-2 my-sm-0" to="/login"
