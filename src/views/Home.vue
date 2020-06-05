@@ -160,6 +160,17 @@
             </div>
           </div>
           <div class="col-md-4">
+            <!-- Create Article -->
+            <div v-if="user" class="p-4 text-center">
+              <router-link
+                tag="button"
+                to="/new-article"
+                class="btn btn-lg btn-primary shadow shadow-sm"
+              >
+                <i class="fas fa-pen pr-2"></i> Write New Article
+              </router-link>
+            </div>
+
             <!--Popular articles-->
             <section class="section shadow shadow-sm my-3">
               <div class="card card-body pb-0">
@@ -184,9 +195,9 @@
                       </div>
                       <div class="col-7">
                         <h6 class="mt-0 text-small">
-                          <a href="#" class="titlePopulerArticle">{{
-                            article.title
-                          }}</a>
+                          <a href="#" class="titlePopulerArticle">
+                            {{ article.title }}
+                          </a>
                         </h6>
                         <div class>
                           <p class="text-small text-secondary mb-0">
@@ -219,9 +230,9 @@
                     <a href="#" class="textBlue">
                       <p class="mb-0">{{ cat.name }}</p>
                     </a>
-                    <span class="badge badge-pill badge-primary font-small">
-                      {{ cat.items }}
-                    </span>
+                    <span class="badge badge-pill badge-primary font-small">{{
+                      cat.items
+                    }}</span>
                   </li>
                 </ul>
               </div>
